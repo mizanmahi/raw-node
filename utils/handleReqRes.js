@@ -15,6 +15,7 @@ reqResHandler.handleReqRes = (req, res) => {
 
   const pathName = parsedUrl.pathname;
   const trimmedPath = pathName.replace(/^\/+|\/$/g, "");
+  console.log(trimmedPath);
   const queryObj = parsedUrl.query;
 
   const method = req.method.toLowerCase();
@@ -44,7 +45,6 @@ reqResHandler.handleReqRes = (req, res) => {
       let parsedRealData = JSON.parse(realData);
       requestProperties.body = parsedRealData;
     }catch{
-      console.log("On catch block");
       requestProperties.body = {};
     }
 
@@ -55,6 +55,7 @@ reqResHandler.handleReqRes = (req, res) => {
       statusCode = typeof statusCode === "number" ? statusCode : 500;
       payload = typeof payload === "object" ? payload : {};
       const payloadString = JSON.stringify(payload);
+      console.log(payloadString);
 
       res.writeHead(statusCode,{"content-type": "application/json"});
       res.end(payloadString);

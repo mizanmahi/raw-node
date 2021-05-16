@@ -54,13 +54,14 @@ handler._user.post = (requestProperties, cb) => {
       phone,
       tosAgreement,
     };
+    console.log(user);
     // make sure data doesnt already exist
-    data.read("users", phone, (err, data) => {
+    data.read("users", phone, (err, udata) => {
       if (err) {
         //  creatng user
         data.create("users", phone, user, (err) => {
           if (!err) {
-            console.log("User Was Created Successfully!");
+            cb(200, { message: "User was created !" });
           } else {
             cb(400, { message: "Error creating new user!" });
           }
@@ -69,10 +70,8 @@ handler._user.post = (requestProperties, cb) => {
         cb(400, { message: "User may alrady exist!" });
       }
     });
-
-    cb(200, { message: "User Was Created Successfully!" });
   } else {
-    cb(400, requestProperties.body);
+    cb(400, {message: "Invalid inputs"});
   }
 };
 
@@ -107,9 +106,9 @@ handler._user.put = (requestProperties, cb) => {
   password =
     typeof password === "string" && password.length > 5 ? password : false;
   if (phone) {
-      data.read("users", phone, (err, data) => {  
+      data.read("users", phone, (err, udata) => {  
           if (!err) {
-              const user = { ...JSON.parse(data) };
+              const user = { ...JSON.parse(udata) };
               console.log(user);
         if (firstName) {
           user.firstName = firstName;
